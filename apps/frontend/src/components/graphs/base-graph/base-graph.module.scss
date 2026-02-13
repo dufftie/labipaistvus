@@ -1,0 +1,60 @@
+.graph {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--transition-standard),
+    visibility var(--transition-standard),
+    -webkit-backdrop-filter 0.4s ease,
+    backdrop-filter 0.4s ease;
+
+  &--active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ant-spin {
+    transform: scale(0.8);
+    opacity: 0;
+    transition:
+      transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      opacity var(--transition-standard);
+
+    &--active {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+.chart {
+  height: 100%;
+  width: 100%;
+  transition:
+    filter var(--transition-standard),
+    opacity var(--transition-standard);
+
+  :global {
+    .recharts-tooltip-cursor {
+      opacity: 0.1;
+    }
+  }
+}

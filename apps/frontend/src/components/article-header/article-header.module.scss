@@ -1,0 +1,22 @@
+@use '@/app/styles/breakpoints' as *;
+
+.header {
+  position: relative;
+  transition: var(--transition-standard);
+
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    height: fit-content;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 2rem;
+
+    @include mobile {
+      font-size: 1.5rem;
+    }
+  }
+}

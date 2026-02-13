@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  .label {
+    font-family: var(--font-family-display);
+    font-size: 14px;
+    color: var(--text-color-light);
+  }
+
+  .select {
+    width: 100%;
+
+    :global(.ant-select-selector) {
+      border-radius: var(--border-radius);
+      border-color: var(--border-color);
+    }
+  }
+}
+
+.select {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color-secondary);
+  font-size: 16px;
+  font-family: var(--font-family-display);
+
+  .input {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  :global {
+    .ant-select {
+      &-selector {
+        border: none !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+      }
+
+      &-selection-item {
+        font-size: 16px;
+        color: var(--text-color-secondary);
+        font-family: var(--font-family-display);
+        padding: 0 !important;
+      }
+
+      &-selection-placeholder {
+        color: var(--text-color-secondary);
+        font-family: var(--font-family-display);
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+@use '@/app/styles/breakpoints' as *;
+
+.a {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+
+  @include mobile {
+    padding: 0 var(--spacing-);
+  }
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: normal;
+  font-family: var(--font-family-display);
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
+
+.h1 {
+  font-size: 3rem;
+
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-top: 7rem;
+
+  @include mobile {
+    font-size: 1.5rem;
+    margin-top: 4rem;
+  }
+}
+
+.p {
+  font-family: var(--font-family-base);
+
+  font-size: 1.15rem;
+  line-height: 2rem;
+  margin-bottom: var(--spacing-md);
+
+  font-weight: 300;
+
+  @include mobile {
+    font-size: 1rem;
+  }
+}
+
+.ol,
+.ul {
+  margin-left: 1rem;
+  margin-bottom: var(--spacing-xl);
+
+  font-family: var(--font-family-base);
+  font-weight: 300;
+  list-style-position: outside;
+}
+
+.ol {
+  list-style-type: decimal;
+}
+
+.ul {
+  list-style-type: lower-alpha;
+  margin-left: 3rem;
+}
+
+.li {
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-color);
+  padding-left: 0.5rem;
+}
+
+.pre {
+  background-color: #000000de;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  margin: var(--spacing-lg) 0 var(--spacing-layout);
+
+  code {
+    font-family: var(--font-family-display);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-green);
+
+    @include mobile {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.blockquote {
+  margin: var(--spacing-layout) 0;
+
+  * {
+    color: var(--color-dark-gray);
+    font-weight: 300;
+  }
+
+  p {
+    margin-bottom: var(--spacing-md);
+  }
+}

@@ -1,0 +1,44 @@
+@use '@/app/styles/breakpoints' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xxl);
+  font-family: var(--font-family-display);
+
+  .title {
+    display: flex;
+  }
+
+  .description {
+    @include mobile {
+      font-size: 0.85rem;
+    }
+  }
+
+  .context {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    text-align: center;
+
+    @include mobile {
+      align-items: start;
+      text-align: left;
+    }
+  }
+
+  .content {
+    display: grid;
+    width: 100%;
+    height: 50vh;
+  }
+}
+
+.legend {
+  font-size: 12px;
+  color: var(--color-dark-gray);
+  text-align: center;
+}

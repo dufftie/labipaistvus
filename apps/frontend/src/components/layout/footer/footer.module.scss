@@ -1,0 +1,75 @@
+@use '@/app/styles/breakpoints' as *;
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: space-between;
+
+  padding-top: var(--spacing-layout);
+  padding-bottom: var(--spacing-xl);
+  padding-inline: var(--spacing-xxl);
+
+  @include mobile {
+    padding: var(--spacing-xxl) var(--spacing-md);
+    gap: var(--spacing-lg);
+    align-items: flex-start;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    font-size: 1.15rem;
+    font-family: var(--font-family-display);
+    gap: var(--spacing-md);
+    z-index: 1;
+
+    @include mobile {
+      order: 1;
+      font-size: 1rem;
+    }
+  }
+
+  .logo {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-family: var(--font-family-base);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    .gradient {
+      position: absolute;
+      background-image: url('/assets/gradient.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 100%;
+      aspect-ratio: 1 / 2;
+      transform: translate(10%, 10%) rotate(130deg);
+
+      mix-blend-mode: exclusion;
+      @supports not (mix-blend-mode: exclusion) {
+        filter: invert(1) opacity(0.9) brightness(1.1);
+      }
+
+      @include mobile {
+        transform: translate(-35%, 5%) rotate(250deg);
+      }
+    }
+
+
+    span {
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+
+    @include mobile {
+      font-size: 1.25rem;
+      flex-direction: column;
+    }
+  }
+}

@@ -1,0 +1,85 @@
+@use '@/app/styles/breakpoints' as *;
+
+.container {
+  display: flex;
+  row-gap: 12px;
+  column-gap: 100px;
+  justify-content: space-between;
+  font-family: var(--font-family-display);
+  min-height: 50vh;
+  align-items: start;
+  color: var(--text-color);
+
+  @include mobile {
+    min-height: initial;
+    flex-direction: column;
+    row-gap: var(--spacing-md);
+  }
+}
+
+.sidebar {
+  flex: 1 1 150px;
+
+  @include mobile {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.sidebarInner {
+  position: sticky;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+
+  @include mobile {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-family: var(--font-family-display);
+  font-weight: bold;
+
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.content {
+  flex: 1 1 100%;
+
+  @include mobile {
+    width: 100%;
+  }
+}
+
+.link {
+  display: block;
+  margin-top: 24px;
+  text-align: center;
+  color: gray;
+  margin-inline: auto;
+}
+
+.input {
+  position: sticky;
+  z-index: 1000;
+  border-radius: 10px;
+  transition: 1s ease-out;
+  box-shadow: 0 0 0 var(--accent-color);
+}
+
+.inputFocused {
+  box-shadow: 0 0 100px var(--accent-color);
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  gap: var(--spacing-sm);
+}

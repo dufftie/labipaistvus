@@ -1,0 +1,22 @@
+@use '@/app/styles/breakpoints' as *;
+
+.select {
+  :global {
+    .ant-radio-button-wrapper {
+      font-size: 16px !important;
+      font-family: var(--font-family-display) !important;
+      
+      @include mobile {
+        font-size: 0.85rem !important;
+      }
+    }
+
+    .ant-radio-button-wrapper-checked {
+      background-color: var(--color-black) !important;
+
+      .ant-radio-button-label {
+        color: var(--color-white) !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,142 @@
+@use '@/app/styles/breakpoints' as *;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Mulish:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Colors */
+  --accent-color: #bbdbf5;
+  --color-red: #ea2525;
+  --color-gray: #b8b8b8;
+  --color-dark-gray: #949494;
+  --color-light-gray: #f5f5f5;
+  --color-black: black;
+  --color-white: white;
+  --color-green: #34CD4E;
+  --color-blue: #bbdbf5;
+
+  --background-color: white;
+  --text-color: black;
+  --text-color-secondary: #00000073;
+  --text-color-light: var(--color-gray);
+
+  --border-color-dark: black;
+  --border-color: var(--color-gray);
+  --footer-text: #ffffff;
+
+  --tooltip-bg: #fff4ea;
+
+  /* Typography */
+  --font-family-base: 'Mulish', sans-serif;
+  --font-family-display: 'IBM Plex Mono', monospace;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-layout: 100px;
+
+  /* Borders and effects */
+  --border-radius-sm: 8px;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  /* Animations */
+  --transition-standard: 0.3s ease;
+  --transition-fast: 0.2s ease;
+  --transition-theme: 0.5s ease;
+
+  /* Ant Design overrides */
+  --ant-primary-color: var(--color-white);
+  --ant-primary-color-hover: var(--color-white);
+  --ant-primary-color-active: var(--color-white);
+  --ant-primary-color-outline: transparent;
+
+  --ant-font-family: var(--font-family-base);
+  --ant-code-family: var(--font-family-display);
+
+  --ant-border-radius-base: var(--border-radius);
+  --ant-border-color-base: var(--border-color);
+
+  --ant-heading-color: var(--text-color);
+  --ant-text-color: var(--text-color);
+  --ant-text-color-secondary: var(--text-color-secondary);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color var(--transition-theme), color var(--transition-theme), border-color var(--transition-theme);
+}
+
+h1 {
+  font-family: var(--font-family-base);
+  font-size: 96px;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+code,
+pre {
+  font-family: var(--font-family-display);
+  white-space: break-spaces;
+}
+
+a {
+  color: var(--text-color) !important;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Ant Design custom styles */
+.ant-form-item-label,
+.ant-descriptions-item {
+  font-family: var(--font-family-display) !important;
+}
+
+.ant-descriptions-item {
+  &-label {
+    color: var(--text-color-secondary) !important;
+    padding-bottom: 0;
+    font-size: 16px !important;
+  }
+
+  &-content {
+    color: var(--text-color) !important;
+    font-size: 16px !important;
+  }
+
+  &-content a {
+    text-decoration: none;
+    transition: var(--transition-standard);
+  }
+
+  &-content a:hover {
+    text-decoration: underline;
+  }
+}
+
+.ant-popover {
+  font-family: var(--font-family-display) !important;
+}

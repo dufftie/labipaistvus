@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  min-height: 150px;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+  filter: grayscale(1) sepia(50%) contrast(70%);
+
+  &.isLoading {
+    opacity: 0;
+    position: absolute;
+  }
+
+  &.loaded {
+    opacity: 1;
+    position: relative;
+  }
+}

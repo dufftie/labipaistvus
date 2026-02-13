@@ -1,0 +1,176 @@
+# How do we analyse articles?
+
+Our project is focused on understanding how political bias is reflected in Estonian media. To do this, we built a system that collects and analyses news articles from major online outlets. The process unfolds in three main stages: collecting the data, filtering relevant content, and analysing the articles using AI.
+
+
+## Step 1: Collecting the Articles
+
+We start by scraping the websites of major Estonian news portals, including **Postimees**, **Delfi**, and **ERR**. This is done using a Python-based crawler built on the [Scrapy](https://github.com/scrapy/scrapy) framework. The crawler opens each media site and begins collecting articles from the newest to the oldest.
+
+Each article is saved to our local database along with key metadata: the title, summary, publication date, author, category, and other relevant fields. We decided to limit our dataset to articles published since 2020, as this five-year window offers enough depth for trend analysis while keeping the project manageable.
+
+From the very beginning, we filter out certain categories of content that are unlikely to contain political bias. Articles related to weather, education, pets, design, health, home, tabloid news, and other lifestyle topics are excluded. These categories are generally not politicised and therefore not relevant to our analysis.
+
+*To be respectful of the media outlets and avoid overloading their servers, we use a soft approach — requesting around one article per second.*
+
+
+## Step 2: Filtering for Relevance
+
+After scraping, the next step is to narrow down the pool of articles to those most likely to contain political content.
+
+1. We include all **"Opinion"** articles. These are the most ideologically expressive pieces and often provide clear insights into a media outlet's political leanings. While we understand that political content also appears outside the Opinion section, given limited resources, this was the most effective starting point.
+
+2. We exclude articles that are behind a paywall. This is partly due to legal concerns – as open-access articles are public and safe to analyse, whereas the status of closed content is unclear. In addition, accessing paywalled content would require either purchasing subscriptions or negotiating with publishers, which adds cost and complexity. From a practical standpoint, open articles are also more influential since they reach a wider audience.
+
+3. We identify and select articles that mention key political parties. By filtering for these mentions, we ensure that the articles we analyse are contextually relevant to the political discourse in Estonia. We created a comprehensive list that includes Estonia's main parties and their common aliases or abbreviations for example: 
+    - **Eesti Keskerakond** (KESK)
+    - **Eesti Konservatiivne Rahvaerakond** (EKRE)
+    - **Eesti Reformierakond** (REF)
+    - **Erakond Eesti 200** (E200)
+    - **ISAMAA Erakond** (Isamaa)
+    - **Sotsiaaldemokraatlik Erakond** (Sotsid)
+
+
+> ## P.S.
+>
+> The **Parempoolsed** ("Right Party") was currently excluded from our analysis for the following reasons:
+>
+> - As of the research period (February–March 2025), the party held no seats in any state institutions.
+> - It had not surpassed the 5% threshold in national polling, making its public and political impact relatively limited at the time.
+> - The word "right" introduces ambiguity for AI models, as it may refer to the political spectrum ("right-wing") rather than the party itself. This makes reliable identification and sentiment analysis in article content problematic.
+
+
+## Step 3: Analysing with AI
+
+We analyse three types of sentiment:
+- **Article sentiment** – general tone and bias of the article and its title
+- **Party sentiment** – sentiment toward each political party mentioned
+- **Person sentiment** – sentiment toward individual people mentioned in the article
+
+Each sentiment is rated on a 0 to 10 scale:
+- **0** = Extremely negative
+- **5** = Neutral
+- **10** = Extremely positive
+
+
+Before running the AI at scale, we conducted a manual test of 20 articles to compare human-assigned sentiment with AI results. The output was consistent and aligned with our expectations. We tested multiple AI models:
+- **Google Gemini**
+- **OpenAI ChatGPT**
+- **DeepSeek**
+
+All three produced similar results. Gemini and ChatGPT stood out for their balance of speed and accuracy, while DeepSeek was slightly less consistent. We evaluated Pro versions as well (e.g., Gemini 2.5 Pro, ChatGPT o3) for better precision, but they were too slow and costly for large-scale analysis.
+
+We proceeded with **Gemini 2.0 Flash** as it offered the best speed/quality/cost ratio. Some sentiment outputs still include anomalies or inconsistencies. We plan to implement a "report" feature so users can flag inaccurate results, improving long-term model accuracy.
+
+After experimenting with various configurations, we decided to use the following AI settings, as they provided more robust and predictable results across models:
+
+```json
+{
+    "temperature": 0.5,
+     "top_p": 0.95,
+     "top_k": 40,
+     "max_output_tokens": 8192
+}
+```
+
+The original prompt used for every analysis in Estonian-speaking media:
+```prompt
+Tee põhjalik analüüs esitatud artiklist, järgides järgmisi juhiseid. **Vastus peab olema esitatud eesti keeles.**
+
+**1. Informatsiooni väljavõtmine:**
+
+*   **Poliitilised parteid:** Tuleta meelde ja loetle *ainult* need poliitilised parteid, mis on artiklis mainitud *ja* mis esinevad järgmises nimekirjas. Kasuta *originaalseid partei nimetusi*:
+    *   Eesti Keskerakond
+    *   Eesti Konservatiivne Rahvaerakond
+    *   EESTIMAA ÜHENDATUD VASAKPARTEI
+    *   Eesti Rahvuslased ja Konservatiivid
+    *   Eesti Reformierakond
+    *   Eesti Vabaduspartei - Põllumeeste Kogu
+    *   Erakond Eesti 200
+    *   Erakond Eestimaa Rohelised
+    *   Erakond Parempoolsed
+    *   ISAMAA Erakond
+    *   KOOS organisatsioon osutab suveräänsusele
+    *   Sotsiaaldemokraatlik Erakond
+    *   Vabaerakond Aru Pähe
+    *   Rahva Ühtsuse Erakond
+
+    *Ignoreeri kõiki muid mainitud poliitilisi organisatsioone või parteisid, mis ei kuulu sellesse nimekirja.*
+    **Nimetuste vastavus:** Ole tähelepanelik lühendite, kõnekeelsete ja alternatiivsete partei nimede ning akronüümide puhul.
+    
+    Kasuta artikli konteksti ja oma teadmisi, et määrata, millisele parteile kuulub vastav mainimine.
+
+*   **Poliitikud:** Tuleta meelde ja loetle *kõik* mainitud poliitikud (sealhulgas riigiteenistujad, valimistel kandideerivad isikud, partei juhid jne). Kasuta täisnimesid ja vajadusel ametikohti. *Määratle iga poliitiku praegune parteiline kuuluvus*. Väldi dubleerimist.
+
+**2. Toonuse analüüs (sentimendi analüüs):**
+
+*   **Autori suhtumise hindamine:** Iga *mainitud partei* (üleval olevast nimekirjast) ja *kõigi* mainitud poliitikute puhul määra autori suhtumine, kasutades skaalat 0 kuni 10, kus:
+    *   0: Väga negatiivne suhtumine.
+    *   5: Neutraalne suhtumine.
+    *   10: Väga positiivne suhtumine.
+
+*   **Suhtumise mõju parteide hindamisele:**  *Kui parteid ei mainita otseselt, aga mainitakse poliitikuid, kes on partei *praegused* liikmed, siis peab autori suhtumine nende poliitikute suhtes *mõjutama* partei suhtumise hindamist.*
+
+*   **Hindamise põhjendus:** Iga hindamise jaoks (parteide ja poliitikute puhul) esita lühike, kuid *konkreetne* põhjendus, viidates või tsiteerides *konkreetseid lauseid, sõnu või väiteid* artikli tekstist, mis kinnitavad sinu hindamist. Ära kirjuta lihtsalt "neutraalne mainimine", vaid selgita, *miks* sa seda neutraalseks pead (näiteks "Mainitakse ainult sündmuse osalejate loetelus, ilma hinnanguteta"). *Parteide hindamise põhjenduses tooda välja, kas poliitikute suhtumine mõjutas hindamist ja kui jah, siis kuidas.*
+*   **Vahepealne lugemine:** Arvesta konteksti, irooniat, sarkasmi, varjatud vihjeid ja muid retoorilisi vahendeid, mis võivad viidata autori tegelikule suhtumisele, isegi kui see ei ole otseselt väljendatud.
+
+**3. Objektiivsuse hindamine:**
+
+*   **Pealkiri:** Hinda artikli *pealkirja* objektiivsust skaalal 0 kuni 10 (0 - väga kallutatud, 10 - täiesti objektiivne). Esita põhjendus. Arvesta, kas pealkiri peegeldab artikli sisu, kas kasutatakse emotsionaalselt värvitud keelt, liialdusi või moonutusi.
+*   **Artikli tekst:** Hinda kogu artikli teksti objektiivsust skaalal 0 kuni 10 (0 - väga kallutatud, 10 - täiesti objektiivne). Esita põhjendus. Arvesta, kas esitatakse erinevaid seisukohti, kas kasutatud on usaldusväärseid allikaid, kas esinevad faktide või arvamuste manipuleerimise tunnused.
+```
+
+
+The original prompt used for every analysis in Russian-speaking media:
+```prompt
+Выполни глубокий анализ предоставленной статьи, следуя следующим инструкциям. **Ответ должен быть предоставлен на русском языке.**
+
+**1. Извлечение информации:**
+
+*   **Политические партии:** Идентифицируй и перечисли *только* те политические партии, которые упомянуты в статье *И* которые присутствуют в следующем списке.  Используй *оригинальные названия* партий:
+    *   Eesti Keskerakond
+    *   Eesti Konservatiivne Rahvaerakond
+    *   EESTIMAA ÜHENDATUD VASAKPARTEI
+    *   Eesti Rahvuslased ja Konservatiivid
+    *   Eesti Reformierakond
+    *   Eesti Vabaduspartei - Põllumeeste Kogu
+    *   Erakond Eesti 200
+    *   Erakond Eestimaa Rohelised
+    *   Erakond Parempoolsed
+    *   ISAMAA Erakond
+    *   KOOS organisatsioon osutab suveräänsusele
+    *   Sotsiaaldemokraatlik Erakond
+    *   Vabaerakond Aru Pähe
+    *   Rahva Ühtsuse Erakond
+
+    *Игнорируй любые другие упомянутые политические организации или партии, не входящие в этот список.*
+
+    **Сопоставление названий:** Будь внимателен к сокращенным, разговорным и альтернативным названиям партий, а также упоминаниям по аббревиатуре. Например:
+    *   "Центристы" следует сопоставлять с "Eesti Keskerakond".
+    *   "Консерваторы" или "EKRE" следует сопоставлять с "Eesti Konservatiivne Rahvaerakond".
+    *   "Реформисты" следует сопоставлять с "Eesti Reformierakond".
+    *   "Зеленые" следует сопоставлять с "Erakond Eestimaa Rohelised".
+    *   "Социал-демократы", "Соцдемы" или "SDE" следует сопоставлять с "Sotsiaaldemokraatlik Erakond".
+    *   "Isamaa" следует сопоставлять с "ISAMAA Erakond".
+    *   "Eesti 200" следует сопоставлять с "Erakond Eesti 200"
+    Используй контекст статьи и свои знания, чтобы определить, к какой из перечисленных партий относится то или иное упоминание.
+
+*   **Политики:** Идентифицируй и перечисли *всех* упомянутых политических деятелей (включая государственных служащих, кандидатов на выборные должности, лидеров партий и т.д.). Используй полные имена. Избегай дублирования.
+
+**2. Анализ тональности (сентимент-анализ):**
+
+*   **Оценка отношения автора:** Для *каждой* упомянутой партии (из списка выше) и *каждого* упомянутого политика определи отношение автора, используя шкалу от 0 до 10, где:
+    *   0: Крайне негативное отношение.
+    *   5: Нейтральное отношение.
+    *   10: Крайне позитивное отношение.
+
+*   **Влияние отношения к политикам на оценку партий:**  *Если партия явно не упоминается, но упоминаются политики, являющиеся ее *текущими* членами, то отношение автора к этим политикам должно *влиять* на оценку отношения к партии.*
+
+*   **Обоснование оценки:** Для *каждой* оценки (партии и политика) предоставь краткое, но *конкретное* обоснование, цитируя или ссылаясь на *конкретные фразы, слова или утверждения* из текста статьи, которые подтверждают твою оценку. Не просто пиши "нейтральное упоминание", а объясняй, *почему* ты считаешь его нейтральным (например, "Упоминается только в контексте перечисления участников события, без оценочных суждений"). *В обосновании оценки партии укажи, повлияло ли на оценку отношение к политикам, и если да, то как.*
+*   **Чтение между строк:** Учитывай контекст, иронию, сарказм, скрытые намеки и другие риторические приемы, которые могут указывать на реальное отношение автора, даже если оно явно не выражено.
+
+**3. Оценка объективности:**
+
+*   **Заголовок:** Оцени объективность *заголовка* статьи по шкале от 0 до 10 (0 - крайне предвзятый, 10 - абсолютно объективный). Предоставь обоснование. Учитывай, отражает ли заголовок содержание статьи, использует ли он эмоционально окрашенную лексику, преувеличения или искажения.
+*   **Текст статьи:** Оцени объективность *всего текста* статьи по шкале от 0 до 10 (0 - крайне предвзятый, 10 - абсолютно объективный). Предоставь обоснование. Учитывай, представлены ли разные точки зрения, используются ли достоверные источники, есть ли признаки манипуляции фактами или мнениями."""
+```

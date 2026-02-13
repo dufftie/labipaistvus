@@ -1,0 +1,53 @@
+@use '@/app/styles/breakpoints' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  border: 1px solid #222;
+  background: var(--background);
+  padding: 12px;
+  max-width: 350px;
+}
+
+.image {
+  aspect-ratio: 1/1.2;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+
+  @include mobile {
+    aspect-ratio: 4/3;
+  }
+}
+
+.email {
+  color: var(--text-color-light);
+  font-size: 0.75rem;
+}
+
+.name {
+  font-family: var(--font-family-display);
+  font-size: 1.5rem;
+}
+
+.roles {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.note {
+  color: var(--text-color-light);
+  font-size: 0.85rem;
+  font-weight: 200;
+
+  &::before {
+    content: '*';
+    color: var(--color-red);
+    font-size: 1em;
+    margin-right: 2px;
+    position: relative;
+    top: 0.1em;
+  } 
+}

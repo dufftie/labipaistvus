@@ -1,0 +1,10 @@
+.chart {
+  text {
+    font-family: var(--font-family-display);
+    font-size: 12px;
+  }
+
+  .analysed-count {
+    fill: var(--color-red);
+  }
+}

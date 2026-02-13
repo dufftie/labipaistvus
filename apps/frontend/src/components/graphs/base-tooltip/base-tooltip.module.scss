@@ -1,0 +1,43 @@
+.tooltip {
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+
+  @supports not (backdrop-filter: blur(30px)) {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  color: #666;
+  font-size: 12px;
+  margin-right: 20px;
+}
+
+.value {
+  font-weight: 500;
+  color: #333;
+  font-size: 13px;
+}

@@ -1,0 +1,114 @@
+@use '@/app/styles/breakpoints' as *;
+
+.root {
+  display: flex;
+  font-family: var(--font-family-display);
+  column-gap: 100px;
+  min-height: 50vh;
+  color: var(--text-color);
+
+  @include mobile {
+    flex-direction: column;
+    row-gap: var(--spacing-xl);
+
+    .details {
+      display: none;
+    }
+  }
+}
+
+.primary {
+  row-gap: var(--spacing-lg);
+
+  .title {
+    display: none;
+  }
+
+  .options {
+    flex-direction: row;
+    gap: var(--spacing-layout);
+
+    @include mobile {
+      flex-direction: column;
+      row-gap: var(--spacing-xl);
+    }
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-family: var(--font-family-display);
+  font-weight: bold;
+
+  @include mobile {
+    font-size: 1.5rem;
+    text-align: right;
+  }
+}
+
+.details {
+  flex: 1 1 300px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.groupTitle {
+  font-size: 1rem;
+  color: var(--text-color-light);
+  margin-bottom: var(--spacing-xs);
+
+  @include mobile {
+    font-size: 0.85rem;
+  }
+}
+
+.option {
+  font-size: 2rem;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover:not(.disabled) {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  &.disabled {
+    cursor: crosshair;
+    color: var(--text-color-light) !important;
+  }
+
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  .label {
+    font-family: var(--font-family-display);
+    font-size: 14px;
+    color: var(--text-color-light);
+  }
+
+  .input {
+    width: 100%;
+
+    :global(.ant-select-selector) {
+      border-radius: var(--border-radius);
+      border-color: var(--border-color);
+    }
+  }
+}

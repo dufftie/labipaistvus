@@ -1,0 +1,29 @@
+@use '@/app/styles/breakpoints' as *;
+
+.analysis {
+  display: flex;
+  gap: var(--spacing-xxl);
+  font-size: 16px;
+  font-family: var(--font-family-display);
+
+  @include mobile {
+    flex-direction: column;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex: 1 1;
+
+    .hint {
+      margin-left: var(--spacing-sm);
+    }
+
+    p {
+      margin-top: var(--spacing-md);
+      font-family: var(--font-family-base);
+      line-height: 1.5rem;
+    }
+  }
+}

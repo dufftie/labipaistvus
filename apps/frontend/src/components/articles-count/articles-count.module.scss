@@ -1,0 +1,26 @@
+@use '@/app/styles/breakpoints' as *;
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  font-family: var(--font-family-display);
+}
+
+.label {
+  color: var(--text-color-light);
+  margin-bottom: var(--spacing-xs);
+}
+
+.value {
+  font-size: 14px;
+}
+
+.vertical {
+  flex-direction: column;
+
+  @include mobile {
+    // On mobile always show horizontal
+    flex-direction: row;
+  }
+}

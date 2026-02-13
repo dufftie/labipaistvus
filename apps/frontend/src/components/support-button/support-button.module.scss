@@ -1,0 +1,16 @@
+@use '@/app/styles/breakpoints' as *;
+
+.button {
+  text-transform: uppercase;
+  height: 100%;
+ 
+  * {
+    font-size: 1.25rem !important;
+    color: var(--color-white) !important;
+  }
+
+  @include mobile {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+}

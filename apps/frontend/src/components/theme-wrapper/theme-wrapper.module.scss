@@ -1,0 +1,47 @@
+@use '@/app/styles/breakpoints' as *;
+
+.themeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-family-base);
+  color: var(--text-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-y: hidden;
+
+  &.light {
+    background-color: var(--color-light-gray);
+    color: var(--text-color);
+  }
+
+  &.dark {
+    background-color: #121212;
+    color: #ffffff;
+
+    :global {
+      --background-color: #121212;
+      --text-color: #e2f2ff;
+      --text-color-light: #5d6a75;
+      --text-color-secondary: #e2f2ff;
+      --border-color: #333333;
+      --border-color-dark: #ffffff;
+      --tooltip-bg: #1f1f1f;
+      --color-secondary: black;
+    }
+  }
+
+  :global {
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1600px;
+      padding: var(--spacing-layout) var(--spacing-xxl);
+      margin-top: var(--spacing-layout);
+      overflow-x: hidden;
+
+      @media (max-width: 768px) {
+        padding: var(--spacing-xxl) var(--spacing-md);
+      }
+    }
+  }
+} 

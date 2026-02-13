@@ -1,0 +1,35 @@
+.select {
+  :global {
+    .ant-picker {
+      width: 100% !important;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .datePicker {
+    width: 100%;
+  }
+
+  .slider {
+    width: 100%;
+    padding: 0 8px;
+
+    .label {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .secondaryRange {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #1890ff;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxl);
+}
+
+.explanations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-md);
+}
+
+.explanation {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-display);
+
+  .name {
+    padding-bottom: var(--spacing-sm);
+  }
+}

@@ -1,0 +1,11 @@
+.hint {
+  max-width: 400px !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  pre {
+    font-size: 12px;
+    font-weight: lighter;
+  }
+}

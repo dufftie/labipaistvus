@@ -1,0 +1,27 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout);
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-layout);
+  }
+
+  .graphs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-layout);
+  }
+}
+
+.graph {
+  height: 75px;
+}
