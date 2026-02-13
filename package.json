@@ -1,0 +1,23 @@
+{
+  "name": "labipaistvus",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npx supabase start\" \"pnpm --filter transparency-fe dev\" --names \"supabase,frontend\" --prefix-colors \"blue,green\"",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "bootstrap": "pnpm --filter main bootstrap"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3",
+    "supabase": "^1.245.3",
+    "turbo": "^2.3.3"
+  },
+  "packageManager": "pnpm@9.15.1",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
