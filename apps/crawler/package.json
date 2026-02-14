@@ -1,0 +1,23 @@
+{
+  "name": "crawler",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "crawl": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@labipaistvus/database": "workspace:*",
+    "crawlee": "^3.12.0",
+    "dotenv": "^16.6.1",
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^20.19.33",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,3 +1,6 @@
 .idea
 /apps/redundant/
-/node_modules/
+node_modules/
+.env
+storage/
+/apps/crawler/node_modules/
