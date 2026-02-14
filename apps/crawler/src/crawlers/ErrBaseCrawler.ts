@@ -102,12 +102,15 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
     }
 
     // Authors - ERR lists editors in elements with class "editor" or "editor-design"
-    let authors: string | null = null;
+    // Split on comma and trim each name
     const editorText = trim($('.editor').text()) || trim($('.editor-design').text());
-    if (editorText) {
-      // Remove the "Editor:" / "Редактор:" / "Toimetaja:" prefix if present
-      authors = editorText.replace(/^(?:Editor|Редактор|Toimetaja):\s*/i, '');
-    }
+    const authors = editorText
+      ? (() => {
+          const cleanedText = editorText.replace(/^(?:Editor|Редактор|Toimetaja):\s*/i, '');
+          const authorsList = cleanedText.split(',').map((name) => trim(name)).filter((name) => name.length > 0);
+          return authorsList.length > 0 ? authorsList : null;
+        })()
+      : null;
 
     // Paywall - ERR is a public broadcaster, no paywall
     const paywall = false;
