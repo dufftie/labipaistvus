@@ -1,0 +1,65 @@
+name: Crawl ERR
+
+on:
+  # Run every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+    inputs:
+      start_id:
+        description: 'Starting article ID (optional)'
+        required: false
+      reverse:
+        description: 'Crawl in reverse (true/false)'
+        required: false
+        default: 'false'
+      max_failures:
+        description: 'Maximum consecutive failures before stopping'
+        required: false
+        default: '50'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run ERR crawler
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        working-directory: apps/crawler
+        run: |
+          MAX_FAILURES="${{ github.event.inputs.max_failures }}"
+          MAX_FAILURES="${MAX_FAILURES:-50}"
+
+          if [ "${{ github.event.inputs.start_id }}" != "" ]; then
+            CMD="pnpm crawl --media=err --start=${{ github.event.inputs.start_id }} --max-failures=$MAX_FAILURES"
+          else
+            CMD="pnpm crawl --media=err --max-failures=$MAX_FAILURES"
+          fi
+
+          if [ "${{ github.event.inputs.reverse }}" = "true" ]; then
+            CMD="$CMD --reverse"
+          fi
+
+          echo "Running: $CMD"
+          $CMD

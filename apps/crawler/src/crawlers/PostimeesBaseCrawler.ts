@@ -8,10 +8,10 @@ import { BaseCrawler, type MediaParserConfig, type CrawlerOptions } from './Base
 type ArticleInsert = Database['public']['Tables']['articles']['Insert'];
 
 // Whitelisted sub-media types for Postimees
-export type PostimeesSubMedia = 'rus' | 'arvamus' | null; // null = main postimees.ee
+export type PostimeesSubMedia = 'rus' | 'arvamus' | 'majandus' | null; // null = main postimees.ee
 
 export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
-  protected readonly ALLOWED_SUB_MEDIA: readonly PostimeesSubMedia[] = [null, 'rus', 'arvamus'];
+  protected readonly ALLOWED_SUB_MEDIA: readonly PostimeesSubMedia[] = [null, 'rus', 'arvamus', 'majandus'];
 
   constructor(config: MediaConfig, options?: CrawlerOptions) {
     super(config, options);
@@ -49,6 +49,9 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
     if (url.match(/^https?:\/\/arvamus\.postimees\.ee\//)) {
       return 'arvamus';
     }
+    if (url.match(/^https?:\/\/majandus\.postimees\.ee\//)) {
+      return 'majandus';
+    }
     // If it's any other subdomain (kultuur, sport, etc.), return undefined
     return undefined;
   }
@@ -79,8 +82,13 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
       return null;
     }
 
-    // Authors
-    const authors = trim($('.author .author__name').text()) || null;
+    // Authors - split on comma and trim each name
+    const authorsText = trim($('.author .author__name').text());
+    let authors: string[] | null = null;
+    if (authorsText) {
+      const authorsList = authorsText.split(',').map((name) => trim(name)).filter((name) => name.length > 0);
+      authors = authorsList.length > 0 ? authorsList : null;
+    }
 
     // Paywall (presence check - detects premium badge in breadcrumb)
     const paywall = $('section.root.breadcrumb ul.breadcrumb__items .button-m--premium').length > 0;

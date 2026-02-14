@@ -52,7 +52,7 @@ export type Database = {
         }
         Insert: {
           article_id: number
-          authors?: string | null
+          authors?: string[] | null
           body: string
           category?: string | null
           created_at?: string | null
@@ -67,7 +67,7 @@ export type Database = {
         }
         Update: {
           article_id?: number
-          authors?: string | null
+          authors?: string[] | null
           body?: string
           category?: string | null
           created_at?: string | null

@@ -10,10 +10,7 @@ export class ArticleStorage {
   async insertOrUpdateArticle(article: ArticleInsert): Promise<ArticleRow> {
     const { data, error } = await supabase
       .from('articles')
-      .upsert(article, {
-        onConflict: 'article_id,media_id,sub_media',
-        ignoreDuplicates: false,
-      })
+      .insert(article)
       .select()
       .single();
 
