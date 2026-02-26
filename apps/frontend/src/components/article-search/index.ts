@@ -1,1 +1,1 @@
-export { default } from './article-search'; 
+export { default } from './article-search';

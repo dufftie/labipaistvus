@@ -59,28 +59,31 @@ const PartyAreaChart = ({
   const fetchUrl = buildUrl({ media_id, startDate, endDate, party });
 
   // Memoize the format function for X-axis
-  const formatXAxis = useCallback((timestamp: number) => {
-    const date = dayjs(timestamp);
-    
-    // Calculate the total duration to determine the appropriate format
-    const [domainStart, domainEnd] = formattedDomainDateRange;
-    const startDate = dayjs(domainStart);
-    const endDate = dayjs(domainEnd);
-    const totalDuration = endDate.diff(startDate, 'day');
-    
-    // For ranges less than 1 year, show month and day
-    if (totalDuration < 365) {
-      return date.format('MMM D');
-    }
-    
-    // For ranges between 1-3 years, show month and year
-    if (totalDuration < 365 * 3) {
-      return date.format('MMM YYYY');
-    }
-    
-    // For ranges over 3 years, show just the year
-    return date.format('YYYY');
-  }, [formattedDomainDateRange]);
+  const formatXAxis = useCallback(
+    (timestamp: number) => {
+      const date = dayjs(timestamp);
+
+      // Calculate the total duration to determine the appropriate format
+      const [domainStart, domainEnd] = formattedDomainDateRange;
+      const startDate = dayjs(domainStart);
+      const endDate = dayjs(domainEnd);
+      const totalDuration = endDate.diff(startDate, 'day');
+
+      // For ranges less than 1 year, show month and day
+      if (totalDuration < 365) {
+        return date.format('MMM D');
+      }
+
+      // For ranges between 1-3 years, show month and year
+      if (totalDuration < 365 * 3) {
+        return date.format('MMM YYYY');
+      }
+
+      // For ranges over 3 years, show just the year
+      return date.format('YYYY');
+    },
+    [formattedDomainDateRange]
+  );
 
   // Memoize the ticks calculation
   const calculateTicks = useCallback((startTimestamp: number, endTimestamp: number) => {
@@ -143,7 +146,7 @@ const PartyAreaChart = ({
 
   return (
     <BaseGraph fetchUrl={fetchUrl} processData={processData}>
-      {(data) => {
+      {data => {
         // Calculate domain for even distribution
         const [domainStart, domainEnd] = formattedDomainDateRange;
         const startTimestamp = dayjs(domainStart).valueOf();

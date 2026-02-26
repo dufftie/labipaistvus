@@ -5,11 +5,13 @@ Web crawler for scraping Estonian news articles using Crawlee.
 ## Setup
 
 1. **Install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 2. **Configure environment variables:**
+
    ```bash
    cp .env.example .env
    # Edit .env with your Supabase credentials
@@ -23,6 +25,7 @@ Web crawler for scraping Estonian news articles using Crawlee.
 ### Local Development
 
 Run crawler for any media by slug:
+
 ```bash
 # Russian Postimees
 pnpm crawl --media=rus-postimees
@@ -43,6 +46,7 @@ pnpm dev -- --media=rus-postimees
 ### Production
 
 Build and run:
+
 ```bash
 pnpm build
 node dist/index.js --media=rus-postimees --start=8415550
@@ -77,6 +81,7 @@ Instead of scraping search pages, the crawler uses **incremental article IDs**:
 ## Configuration
 
 Minimal configuration needed in `news_media` table:
+
 - `slug` - Media identifier (e.g., 'rus-postimees')
 - `id` - Used to track which articles belong to which media
 - `title` - Display name

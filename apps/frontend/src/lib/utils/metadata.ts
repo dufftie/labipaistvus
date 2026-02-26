@@ -26,4 +26,4 @@ export const generatePageMetadata = async ({
       images: image ? [image] : undefined,
     },
   };
-}; 
+};

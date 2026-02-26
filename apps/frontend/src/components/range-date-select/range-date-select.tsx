@@ -64,13 +64,8 @@ export const RangeDateSelect = ({ value, onChange, minDate, maxDate }: RangeDate
 };
 
 export default function RangeDateSelectCard() {
-  const {
-    requestDateRange,
-    setRequestDateRange,
-    setDomainDateRange,
-    sliderValue,
-    setSliderValue,
-  } = useDateRange();
+  const { requestDateRange, setRequestDateRange, setDomainDateRange, sliderValue, setSliderValue } =
+    useDateRange();
 
   useEffect(() => {
     // If request date range was changed, reset domain date range to match
@@ -141,4 +136,4 @@ export default function RangeDateSelectCard() {
       </div>
     </Card>
   );
-} 
+}

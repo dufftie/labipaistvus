@@ -1,1 +1,1 @@
-export { default } from './media-layout'; 
+export { default } from './media-layout';

@@ -11,14 +11,10 @@ interface BaseTooltipProps {
 const BaseTooltip = ({ fetchUrl, processData, children }: BaseTooltipProps) => {
   const { data } = useDataFetching({
     fetchUrl,
-    processData: processData || ((data) => data),
+    processData: processData || (data => data),
   });
 
-  return (
-    <div className={styles.tooltip}>
-      {fetchUrl ? children(data) : children()}
-    </div>
-  );
+  return <div className={styles.tooltip}>{fetchUrl ? children(data) : children()}</div>;
 };
 
 export default BaseTooltip;

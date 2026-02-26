@@ -1,5 +1,5 @@
-import type { MDXComponents } from 'mdx/types'
-import styles from './mdx-components.module.scss'
+import type { MDXComponents } from 'mdx/types';
+import styles from './mdx-components.module.scss';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -13,7 +13,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     code: ({ children }) => <code className={styles.code}>{children}</code>,
     pre: ({ children }) => <pre className={styles.pre}>{children}</pre>,
     blockquote: ({ children }) => <blockquote className={styles.blockquote}>{children}</blockquote>,
-    a: ({ children, ...props }) => <a className={styles.a} {...props}>{children}</a>,
+    a: ({ children, ...props }) => (
+      <a className={styles.a} {...props}>
+        {children}
+      </a>
+    ),
     ...components,
-  }
+  };
 }

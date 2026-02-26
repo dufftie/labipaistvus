@@ -1,17 +1,25 @@
-import type { CheerioAPI } from 'cheerio';
-import { serializeTextProp } from '../utils/helpers.js';
-import type { MediaConfig } from '../utils/config.js';
-import { trim } from 'lodash-es';
-import type { Database } from '@labipaistvus/database';
-import { BaseCrawler, type MediaParserConfig, type CrawlerOptions } from './BaseCrawler.js';
+import type { CheerioAPI } from "crawlee";
+import { serializeTextProp } from "../utils/helpers.js";
+import type { MediaConfig } from "../utils/config.js";
+import { trim } from "lodash-es";
+import type { Database } from "@labipaistvus/database";
+import {
+  BaseCrawler,
+  type MediaParserConfig,
+  type CrawlerOptions,
+} from "./base-crawler.js";
 
-type ArticleInsert = Database['public']['Tables']['articles']['Insert'];
+type ArticleInsert = Database["public"]["Tables"]["articles"]["Insert"];
 
 // Whitelisted sub-media types for ERR
-export type ErrSubMedia = 'news' | 'rus' | null; // null = main err.ee (Estonian)
+export type ErrSubMedia = "news" | "rus" | null; // null = main err.ee (Estonian)
 
 export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
-  protected readonly ALLOWED_SUB_MEDIA: readonly ErrSubMedia[] = [null, 'news', 'rus'];
+  protected readonly ALLOWED_SUB_MEDIA: readonly ErrSubMedia[] = [
+    null,
+    "news",
+    "rus",
+  ];
 
   constructor(config: MediaConfig, options?: CrawlerOptions) {
     super(config, options);
@@ -22,8 +30,8 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
    */
   protected getParserConfig(): MediaParserConfig {
     return {
-      baseDomain: 'err.ee',
-      urlTemplate: 'https://www.err.ee/{id}', // ERR auto-routes to correct subdomain
+      baseDomain: "err.ee",
+      urlTemplate: "https://err.ee/{id}", // ERR auto-routes to correct subdomain
     };
   }
 
@@ -44,10 +52,10 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
       return null; // Main site - Estonian (with or without www)
     }
     if (url.match(/^https?:\/\/news\.err\.ee\//)) {
-      return 'news'; // English version
+      return "news"; // English version
     }
     if (url.match(/^https?:\/\/rus\.err\.ee\//)) {
-      return 'rus'; // Russian version
+      return "rus"; // Russian version
     }
     // If it's any other subdomain, return undefined
     return undefined;
@@ -61,12 +69,12 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
     $: CheerioAPI,
     url: string,
     articleId: number,
-    subMedia: ErrSubMedia
+    subMedia: ErrSubMedia,
   ): ArticleInsert | null {
     // Check for "Article not found" page
     // ERR returns HTTP 200 but shows "Artiklit ei leitud" message
-    const bodyText = $('body').text();
-    if (bodyText.includes('Artiklit ei leitud')) {
+    const bodyText = $("body").text();
+    if (bodyText.includes("Artiklit ei leitud")) {
       console.log(`✗ Article ${articleId} not found (ERR 404 page)`);
       return null;
     }
@@ -94,7 +102,7 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
     }
 
     // Title - ERR uses simple h1 tag
-    const title = trim($('h1').first().text()) || null;
+    const title = trim($("h1").first().text()) || null;
 
     if (!title) {
       console.warn(`No title found for: ${url}`);
@@ -103,11 +111,18 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
 
     // Authors - ERR lists editors in elements with class "editor" or "editor-design"
     // Split on comma and trim each name
-    const editorText = trim($('.editor').text()) || trim($('.editor-design').text());
+    const editorText =
+      trim($(".editor").text()) || trim($(".editor-design").text());
     const authors = editorText
       ? (() => {
-          const cleanedText = editorText.replace(/^(?:Editor|Редактор|Toimetaja):\s*/i, '');
-          const authorsList = cleanedText.split(',').map((name) => trim(name)).filter((name) => name.length > 0);
+          const cleanedText = editorText.replace(
+            /^(?:Editor|Редактор|Toimetaja):\s*/i,
+            "",
+          );
+          const authorsList = cleanedText
+            .split(",")
+            .map((name) => trim(name))
+            .filter((name) => name.length > 0);
           return authorsList.length > 0 ? authorsList : null;
         })()
       : null;
@@ -127,8 +142,8 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
 
     // Preview image - look for img tags hosted on s.err.ee or og:image meta tag
     const preview_url =
-      $('img[src*="s.err.ee"]').first().attr('src') ||
-      $('meta[property="og:image"]').attr('content') ||
+      $('img[src*="s.err.ee"]').first().attr("src") ||
+      $('meta[property="og:image"]').attr("content") ||
       null;
 
     // Body text - ERR uses simple p tags
@@ -145,7 +160,7 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
     ];
 
     // Find all p tags that contain substantial text
-    $('p').each((_: number, element: any) => {
+    $("p").each((_: number, element: any) => {
       const text = trim($(element).text());
 
       // Skip if too short, is editor line, or matches boilerplate patterns
@@ -158,7 +173,9 @@ export class ErrBaseCrawler extends BaseCrawler<ErrSubMedia> {
       }
 
       // Check if it matches any exclude pattern
-      const isBoilerplate = excludePatterns.some((pattern) => pattern.test(text));
+      const isBoilerplate = excludePatterns.some((pattern) =>
+        pattern.test(text),
+      );
       if (isBoilerplate) {
         return;
       }

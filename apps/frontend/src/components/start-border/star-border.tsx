@@ -1,26 +1,25 @@
 'use client';
 
-import React from "react";
+import React from 'react';
 import styles from './star-button.module.scss';
 
-type StarBorderProps<T extends React.ElementType> =
-  React.ComponentPropsWithoutRef<T> & {
-    as?: T;
-    className?: string;
-    children?: React.ReactNode;
-    color?: string;
-    speed?: React.CSSProperties['animationDuration'];
-  }
+type StarBorderProps<T extends React.ElementType> = React.ComponentPropsWithoutRef<T> & {
+  as?: T;
+  className?: string;
+  children?: React.ReactNode;
+  color?: string;
+  speed?: React.CSSProperties['animationDuration'];
+};
 
-const StarBorder = <T extends React.ElementType = "button">({
+const StarBorder = <T extends React.ElementType = 'button'>({
   as,
-  className = "",
-  color = "white",
-  speed = "6s",
+  className = '',
+  color = 'white',
+  speed = '6s',
   children,
   ...rest
 }: StarBorderProps<T>) => {
-  const Component = as || "button";
+  const Component = as || 'button';
 
   return (
     <div className={`${styles['star-border-container']} ${className}`} {...rest}>

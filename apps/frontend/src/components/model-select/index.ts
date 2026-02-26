@@ -1,1 +1,1 @@
-export { default } from './model-select'; 
+export { default } from './model-select';

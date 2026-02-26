@@ -31,11 +31,13 @@ const interpolateColor = (value: number, totalValues: number) => {
   // Convert hex to RGB
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
   };
 
   const negativeColor = hexToRgb('#EA5753')!;
@@ -49,23 +51,19 @@ const interpolateColor = (value: number, totalValues: number) => {
   if (percentage <= 40) {
     // Interpolate between negative and neutral (0% to 40%)
     const t = percentage / 40;
-    return `rgb(${
-      Math.round(negativeColor.r + (neutralColor.r - negativeColor.r) * t)
-    }, ${
-      Math.round(negativeColor.g + (neutralColor.g - negativeColor.g) * t)
-    }, ${
-      Math.round(negativeColor.b + (neutralColor.b - negativeColor.b) * t)
-    })`;
+    return `rgb(${Math.round(
+      negativeColor.r + (neutralColor.r - negativeColor.r) * t
+    )}, ${Math.round(negativeColor.g + (neutralColor.g - negativeColor.g) * t)}, ${Math.round(
+      negativeColor.b + (neutralColor.b - negativeColor.b) * t
+    )})`;
   } else if (percentage >= 60) {
     // Interpolate between neutral and positive (60% to 100%)
     const t = (percentage - 60) / 40;
-    return `rgb(${
-      Math.round(neutralColor.r + (positiveColor.r - neutralColor.r) * t)
-    }, ${
-      Math.round(neutralColor.g + (positiveColor.g - neutralColor.g) * t)
-    }, ${
-      Math.round(neutralColor.b + (positiveColor.b - neutralColor.b) * t)
-    })`;
+    return `rgb(${Math.round(
+      neutralColor.r + (positiveColor.r - neutralColor.r) * t
+    )}, ${Math.round(neutralColor.g + (positiveColor.g - neutralColor.g) * t)}, ${Math.round(
+      neutralColor.b + (positiveColor.b - neutralColor.b) * t
+    )})`;
   } else {
     // Use neutral color for the middle range (40% to 60%)
     return '#D9D9D9';
@@ -82,17 +80,17 @@ const SimpleBarChart = ({ media_id }: SimpleBarChartProps) => {
   const processData = (data: any) => {
     // Create an array with all possible values from 0 to 10
     const allValues = Array.from({ length: 11 }, (_, i) => i.toString());
-    
+
     // Map the data to include all values, defaulting to 0 for missing ones
     return allValues.map(key => ({
       key,
-      value: Number(data[key] || 0)
+      value: Number(data[key] || 0),
     }));
   };
 
   return (
     <BaseGraph fetchUrl={fetchUrl} processData={processData}>
-      {(data) => {
+      {data => {
         return (
           <BarChart
             data={data}
@@ -101,12 +99,7 @@ const SimpleBarChart = ({ media_id }: SimpleBarChartProps) => {
           >
             <CartesianGrid strokeDasharray="3 3" vertical={isMobile} horizontal={!isMobile} />
 
-            <Bar
-              dataKey="value"
-              fill="#EBEBEB"
-              minPointSize={30}
-              opacity={0.8}
-            >
+            <Bar dataKey="value" fill="#EBEBEB" minPointSize={30} opacity={0.8}>
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={interpolateColor(index, data.length)} />
               ))}
@@ -130,8 +123,8 @@ const SimpleBarChart = ({ media_id }: SimpleBarChartProps) => {
                 tickLine={false}
                 width={80}
                 fontSize={10}
-                textAnchor='end'
-                orientation='right'
+                textAnchor="end"
+                orientation="right"
                 mirror
               />
             ) : (
@@ -162,7 +155,7 @@ const SimpleBarChart = ({ media_id }: SimpleBarChartProps) => {
                 width={30}
                 fontSize={10}
                 domain={[0, 10]}
-                scale='linear'
+                scale="linear"
               />
             )}
           </BarChart>
@@ -172,4 +165,4 @@ const SimpleBarChart = ({ media_id }: SimpleBarChartProps) => {
   );
 };
 
-export default SimpleBarChart; 
+export default SimpleBarChart;

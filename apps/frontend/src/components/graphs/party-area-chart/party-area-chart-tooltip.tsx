@@ -29,9 +29,7 @@ const PartyAreaTooltip = ({ active, payload }: TooltipProps<any, any>) => {
     <BaseTooltip processData={data => data}>
       {() => (
         <>
-          <div className={styles.title}>
-            {entry.date && formatDate(entry.date, 'DD MMMM YYYY')}
-          </div>
+          <div className={styles.title}>{entry.date && formatDate(entry.date, 'DD MMMM YYYY')}</div>
           <div className={styles.values}>
             <div className={styles.item}>
               <span className={styles.label}>Positive:</span>

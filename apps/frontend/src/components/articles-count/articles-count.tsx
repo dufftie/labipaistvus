@@ -62,7 +62,10 @@ export default function ArticlesCount({
   );
 
   return (
-    <div className={classNames(styles.container, layout === 'vertical' && styles.vertical)} ref={scopeRef}>
+    <div
+      className={classNames(styles.container, layout === 'vertical' && styles.vertical)}
+      ref={scopeRef}
+    >
       <div className={styles.value}>
         <div className={styles.label}>Scanned</div>
         <span ref={totalCountRef}>{total_count.toLocaleString()}</span>

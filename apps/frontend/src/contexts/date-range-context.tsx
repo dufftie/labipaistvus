@@ -33,8 +33,12 @@ interface DateRangeProviderProps {
 }
 
 export const DateRangeProvider = ({ children }: DateRangeProviderProps) => {
-  const [requestDateRange, setRequestDateRange] = useState<RangePickerProps['value']>([DEFAULT_START_DATE, DEFAULT_END_DATE]);
-  const [domainDateRange, setDomainDateRange] = useState<RangePickerProps['value']>(requestDateRange);
+  const [requestDateRange, setRequestDateRange] = useState<RangePickerProps['value']>([
+    DEFAULT_START_DATE,
+    DEFAULT_END_DATE,
+  ]);
+  const [domainDateRange, setDomainDateRange] =
+    useState<RangePickerProps['value']>(requestDateRange);
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100]);
 
   // Format date ranges for API calls with fallbacks to ensure they're always strings
@@ -59,9 +63,5 @@ export const DateRangeProvider = ({ children }: DateRangeProviderProps) => {
     formattedDomainDateRange,
   };
 
-  return (
-    <DateRangeContext.Provider value={value}>
-      {children}
-    </DateRangeContext.Provider>
-  );
-}; 
+  return <DateRangeContext.Provider value={value}>{children}</DateRangeContext.Provider>;
+};

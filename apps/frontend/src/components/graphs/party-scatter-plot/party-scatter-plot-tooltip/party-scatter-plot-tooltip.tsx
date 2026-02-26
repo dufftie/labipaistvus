@@ -40,4 +40,4 @@ export default function PartyScatterPlotTooltip(props: TooltipProps<any, any>) {
       }}
     </BaseTooltip>
   );
-};
+}

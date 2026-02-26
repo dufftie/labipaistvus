@@ -8,7 +8,7 @@ export default async function Home() {
   }>(`/media`);
 
   return (
-    <div className='medias-layout'>
+    <div className="medias-layout">
       <MediaSelect media={media} primary />
     </div>
   );

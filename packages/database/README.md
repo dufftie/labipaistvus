@@ -24,6 +24,7 @@ pnpm generate-types
 ## Workflow: Making Schema Changes
 
 ### Step 1: Open Supabase Studio
+
 ```bash
 # Ensure Supabase is running locally
 supabase status
@@ -33,11 +34,13 @@ open http://localhost:54323
 ```
 
 ### Step 2: Make Changes Visually
+
 - Navigate to Table Editor
 - Add/modify tables, columns, constraints
 - Click Save
 
 ### Step 3: Generate Migration
+
 ```bash
 # From repository root
 supabase db diff <migration_name>
@@ -49,6 +52,7 @@ supabase db diff add_tags_column
 ```
 
 ### Step 4: Regenerate TypeScript Types
+
 ```bash
 # From this package directory
 pnpm generate-types
@@ -58,6 +62,7 @@ pnpm --filter @labipaistvus/database generate-types
 ```
 
 ### Step 5: Commit Both Files
+
 ```bash
 git add supabase/migrations/ packages/database/src/types/
 git commit -m "Add tags column to articles"
@@ -66,39 +71,41 @@ git commit -m "Add tags column to articles"
 ## Usage
 
 ### In Crawler (Node.js)
+
 ```typescript
-import { supabase, type Tables } from '@labipaistvus/database';
+import { supabase, type Tables } from "@labipaistvus/database";
 
 // Type-safe insert
-type ArticleInsert = Tables<'articles'>['Insert'];
+type ArticleInsert = Tables<"articles">["Insert"];
 
 const article: ArticleInsert = {
   article_id: 123,
   media_id: 2,
-  url: 'https://example.com',
-  title: 'Article Title',
+  url: "https://example.com",
+  title: "Article Title",
   date_time: new Date().toISOString(),
   paywall: false,
-  body: 'Article content',
+  body: "Article content",
 };
 
 const { data, error } = await supabase
-  .from('articles')
+  .from("articles")
   .insert(article)
   .select()
   .single();
 ```
 
 ### In Frontend (Next.js)
+
 ```typescript
-import { supabase } from '@labipaistvus/database';
+import { supabase } from "@labipaistvus/database";
 
 // Type-safe query with full IntelliSense
 const { data: articles } = await supabase
-  .from('articles')
-  .select('*')
-  .eq('media_id', 2)
-  .order('date_time', { ascending: false })
+  .from("articles")
+  .select("*")
+  .eq("media_id", 2)
+  .order("date_time", { ascending: false })
   .limit(10);
 
 // articles is typed as Tables<'articles'>['Row'][]

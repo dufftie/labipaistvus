@@ -56,4 +56,4 @@ export default function MediaLayout({
       </div>
     </DateRangeProvider>
   );
-};
+}

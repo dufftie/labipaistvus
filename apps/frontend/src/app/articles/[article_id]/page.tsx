@@ -19,15 +19,17 @@ const getArticleData = cache(async (article_id: string) => {
   }>(`/articles/${article_id}`, undefined, { next: { revalidate: 3600 } });
 });
 
-export async function generateMetadata({ params }: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<{ article_id: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  
+
   try {
     const { article } = await getArticleData(resolvedParams.article_id);
     if (!article) return {};
-  
+
     return generatePageMetadata({
       title: article.title,
       image: ensureHttpsUrl(article.preview_url),
@@ -38,7 +40,9 @@ export async function generateMetadata({ params }: {
   }
 }
 
-export default async function ArticleDetailPage({ params }: { 
+export default async function ArticleDetailPage({
+  params,
+}: {
   params: Promise<{ article_id: string }>;
 }) {
   const { article_id } = await params;

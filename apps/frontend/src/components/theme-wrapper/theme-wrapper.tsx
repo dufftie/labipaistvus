@@ -23,4 +23,4 @@ const ThemeWrapper = ({ children }: ThemeWrapperProps) => {
   );
 };
 
-export default ThemeWrapper; 
+export default ThemeWrapper;

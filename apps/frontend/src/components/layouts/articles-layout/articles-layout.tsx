@@ -12,17 +12,22 @@ interface ArticlesLayoutProps {
   [key: string]: any;
 }
 
-function ArticlesLayoutContent({ children, total_articles, total_sentiments, ...props }: ArticlesLayoutProps) {
+function ArticlesLayoutContent({
+  children,
+  total_articles,
+  total_sentiments,
+  ...props
+}: ArticlesLayoutProps) {
   const searchParams = useSearchParams();
   const searchValue = searchParams.get('search') || undefined;
 
   return (
     <div className={styles.container}>
-      <ArticleSearch 
+      <ArticleSearch
         total_articles={total_articles}
         total_sentiments={total_sentiments}
-        defaultValue={searchValue} 
-        limit={100} 
+        defaultValue={searchValue}
+        limit={100}
       />
       {children}
     </div>

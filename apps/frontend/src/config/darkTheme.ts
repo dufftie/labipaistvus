@@ -19,4 +19,4 @@ const darkTheme: ThemeConfig = {
   },
 };
 
-export default darkTheme; 
+export default darkTheme;

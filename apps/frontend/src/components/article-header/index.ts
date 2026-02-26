@@ -1,1 +1,1 @@
-export { default } from './article-header'; 
+export { default } from './article-header';

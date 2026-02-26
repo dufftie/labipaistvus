@@ -29,7 +29,9 @@ export default function AnalysisWidget(props: AnalysisTableProps) {
           {map(data, explanation => (
             <div className={styles.explanation} key={explanation.name}>
               <span className={styles.name}>
-                <b>{explanation.name} – {explanation.score}</b>
+                <b>
+                  {explanation.name} – {explanation.score}
+                </b>
               </span>
               <div className={styles.text}>{explanation.explanation}</div>
             </div>

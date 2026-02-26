@@ -1,1 +1,1 @@
-export { default } from './media-select'; 
+export { default } from './media-select';

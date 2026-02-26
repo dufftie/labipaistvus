@@ -1,1 +1,1 @@
-export { default } from './article-analysis'; 
+export { default } from './article-analysis';

@@ -1,1 +1,1 @@
-export { default } from './articles-count'; 
+export { default } from './articles-count';

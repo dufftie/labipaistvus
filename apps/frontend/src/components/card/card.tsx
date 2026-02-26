@@ -13,10 +13,12 @@ interface CardProps {
 
 export default function Card({ label, children, primary, borderless, hint, className }: CardProps) {
   return (
-    <div className={classNames(styles.card, className, {
-      [styles.primary]: primary,
-      [styles.borderless]: borderless,
-    })}>
+    <div
+      className={classNames(styles.card, className, {
+        [styles.primary]: primary,
+        [styles.borderless]: borderless,
+      })}
+    >
       <div className={styles.header}>
         {label && <div className={styles.label}>{label}</div>}
         {hint && <Hint content={hint} />}

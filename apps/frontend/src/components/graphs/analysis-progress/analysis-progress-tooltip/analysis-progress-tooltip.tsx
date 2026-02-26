@@ -13,7 +13,12 @@ interface AnalysisProgressData {
 export default function AnalysisProgressTooltip({ active, payload }: TooltipProps<number, string>) {
   if (!active || !payload?.[0]?.payload) return null;
 
-  const { date, analysed_count = 0, non_analyzed_articles = 0, articles_count = 0 } = payload[0].payload as AnalysisProgressData;
+  const {
+    date,
+    analysed_count = 0,
+    non_analyzed_articles = 0,
+    articles_count = 0,
+  } = payload[0].payload as AnalysisProgressData;
 
   return (
     <BaseTooltip processData={data => data}>

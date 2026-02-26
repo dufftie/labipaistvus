@@ -7,7 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Cell,
-  ResponsiveContainer, LabelList,
+  ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 import partiesList from '@/src/lib/dictionaries/partiesList';
 
@@ -57,7 +58,7 @@ const ArticlePartySentimentBarchart = ({ parties }: ArticlePartySentimentBarchar
           <YAxis
             type="number"
             domain={[0, 10]}
-            scale='linear'
+            scale="linear"
             axisLine={false}
             tickLine={false}
             width={20}
@@ -68,12 +69,7 @@ const ArticlePartySentimentBarchart = ({ parties }: ArticlePartySentimentBarchar
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
-            <LabelList
-              dataKey="score"
-              position="insideBottom"
-              fill="white"
-              fontWeight="bold"
-            />
+            <LabelList dataKey="score" position="insideBottom" fill="white" fontWeight="bold" />
           </Bar>
         </BarChart>
       </ResponsiveContainer>

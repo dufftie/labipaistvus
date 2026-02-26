@@ -9,11 +9,7 @@ interface ArticlesStats {
 }
 
 const getArticlesStats = cache(async () => {
-  return fetchData<ArticlesStats>(
-    `/articles/stats`,
-    undefined,
-    { next: { revalidate: 3600 } }
-  );
+  return fetchData<ArticlesStats>(`/articles/stats`, undefined, { next: { revalidate: 3600 } });
 });
 
 export default async function ArticlesPage() {

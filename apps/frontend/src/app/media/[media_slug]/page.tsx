@@ -16,11 +16,13 @@ const getMediaData = cache(async (media_slug: string) => {
   });
 });
 
-export async function generateMetadata({ params }: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<{ media_slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  
+
   try {
     const { media } = await getMediaData(resolvedParams.media_slug);
     if (!media) return {};
@@ -34,7 +36,9 @@ export async function generateMetadata({ params }: {
   }
 }
 
-export default async function MediaDetailPage({ params }: { 
+export default async function MediaDetailPage({
+  params,
+}: {
   params: Promise<{ media_slug: string }>;
 }) {
   const { media_slug } = await params;
@@ -43,20 +47,24 @@ export default async function MediaDetailPage({ params }: {
     const response = await getMediaData(media_slug);
 
     if (!response) {
-      return <ErrorResult 
-        status="404" 
-        title="Media not found" 
-        subTitle="The media you are looking for does not exist."
-      />;
+      return (
+        <ErrorResult
+          status="404"
+          title="Media not found"
+          subTitle="The media you are looking for does not exist."
+        />
+      );
     }
 
     return <MediaLayout {...response} />;
   } catch (error) {
     console.error('Error fetching media data:', error);
-    return <ErrorResult 
-      status="error" 
-      title="Failed to load media data" 
-      subTitle="There was an error loading the media data. Please try again later."
-    />;
+    return (
+      <ErrorResult
+        status="error"
+        title="Failed to load media data"
+        subTitle="There was an error loading the media data. Please try again later."
+      />
+    );
   }
 }

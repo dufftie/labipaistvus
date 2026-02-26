@@ -10,7 +10,9 @@ interface PartiesMonthlySentimentsAreaChartProps {
   media_id: string;
 }
 
-export default function PartiesMonthlySentimentsAreaChart({ media_id }: PartiesMonthlySentimentsAreaChartProps) {
+export default function PartiesMonthlySentimentsAreaChart({
+  media_id,
+}: PartiesMonthlySentimentsAreaChartProps) {
   const [party, setParty] = useState(partiesList[0].value);
 
   return (
@@ -28,4 +30,4 @@ export default function PartiesMonthlySentimentsAreaChart({ media_id }: PartiesM
       />
     </GraphWidget>
   );
-};
+}

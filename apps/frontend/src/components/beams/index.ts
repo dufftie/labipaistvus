@@ -1,1 +1,1 @@
-export { default } from "./beams";
+export { default } from './beams';

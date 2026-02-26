@@ -36,10 +36,7 @@ const MediaSelectDetail = ({ media }: MediaSelectDetailProps) => {
       </div>
       <p className={styles.description}>{description}</p>
       {analyzed_count !== undefined && total_count !== undefined && (
-        <ArticlesCount
-          analyzed_count={analyzed_count}
-          total_count={total_count}
-        />
+        <ArticlesCount analyzed_count={analyzed_count} total_count={total_count} />
       )}
     </div>
   );

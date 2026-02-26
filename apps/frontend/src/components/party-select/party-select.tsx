@@ -11,11 +11,11 @@ export default function PartySelect({ value, onChange }: PartySelectProps) {
   return (
     <Radio.Group
       value={value}
-      onChange={(e) => onChange?.(e.target.value)}
+      onChange={e => onChange?.(e.target.value)}
       rootClassName={styles.select}
-      size='large'
+      size="large"
     >
-      {partiesList.map((party) => (
+      {partiesList.map(party => (
         <Radio.Button key={party.value} value={party.value}>
           {party.label}
         </Radio.Button>

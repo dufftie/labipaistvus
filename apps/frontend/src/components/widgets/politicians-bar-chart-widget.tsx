@@ -9,17 +9,21 @@ interface PoliticiansMonthlySentimentsBarchartProps {
   media_id: string;
 }
 
-const PoliticiansMonthlySentimentsBarchart = ({ media_id }: PoliticiansMonthlySentimentsBarchartProps) => {
-    // TODO: Add functionality to filter
+const PoliticiansMonthlySentimentsBarchart = ({
+  media_id,
+}: PoliticiansMonthlySentimentsBarchartProps) => {
+  // TODO: Add functionality to filter
 
   // State for sorting
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sortBy, setSortBy] = useState<'name' | 'total' | 'positive' | 'negative'>('total'); // Default sort by name
-  
+
   // State for sentiment visibility
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [visibleSentiments, setVisibleSentiments] = useState<string[]>([
-    'positive', 'neutral', 'negative'
+    'positive',
+    'neutral',
+    'negative',
   ]);
 
   return (
@@ -41,4 +45,4 @@ const PoliticiansMonthlySentimentsBarchart = ({ media_id }: PoliticiansMonthlySe
   );
 };
 
-export default PoliticiansMonthlySentimentsBarchart; 
+export default PoliticiansMonthlySentimentsBarchart;

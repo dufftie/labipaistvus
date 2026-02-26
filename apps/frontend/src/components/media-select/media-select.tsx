@@ -22,7 +22,9 @@ interface MediaSelectProps {
 const MediaSelect = ({ media, primary = false }: MediaSelectProps): JSX.Element => {
   const scopeRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
-  const [activeMedia, setActiveMedia] = useState<MediaDataOrPlaceholder | null | undefined>(undefined);
+  const [activeMedia, setActiveMedia] = useState<MediaDataOrPlaceholder | null | undefined>(
+    undefined
+  );
 
   useGSAP(
     () => {

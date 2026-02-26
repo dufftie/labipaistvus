@@ -1,17 +1,26 @@
-import type { CheerioAPI } from 'cheerio';
-import { serializeTextProp } from '../utils/helpers.js';
-import type { MediaConfig } from '../utils/config.js';
-import { trim } from 'lodash-es';
-import type { Database } from '@labipaistvus/database';
-import { BaseCrawler, type MediaParserConfig, type CrawlerOptions } from './BaseCrawler.js';
+import type { CheerioAPI } from "crawlee";
+import { serializeTextProp } from "../utils/helpers.js";
+import type { MediaConfig } from "../utils/config.js";
+import { trim } from "lodash-es";
+import type { Database } from "@labipaistvus/database";
+import {
+  BaseCrawler,
+  type MediaParserConfig,
+  type CrawlerOptions,
+} from "./base-crawler.js";
 
-type ArticleInsert = Database['public']['Tables']['articles']['Insert'];
+type ArticleInsert = Database["public"]["Tables"]["articles"]["Insert"];
 
 // Whitelisted sub-media types for Postimees
-export type PostimeesSubMedia = 'rus' | 'arvamus' | 'majandus' | null; // null = main postimees.ee
+export type PostimeesSubMedia = "rus" | "arvamus" | "majandus" | null; // null = main postimees.ee
 
 export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
-  protected readonly ALLOWED_SUB_MEDIA: readonly PostimeesSubMedia[] = [null, 'rus', 'arvamus', 'majandus'];
+  protected readonly ALLOWED_SUB_MEDIA: readonly PostimeesSubMedia[] = [
+    null,
+    "rus",
+    "arvamus",
+    "majandus",
+  ];
 
   constructor(config: MediaConfig, options?: CrawlerOptions) {
     super(config, options);
@@ -22,8 +31,8 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
    */
   protected getParserConfig(): MediaParserConfig {
     return {
-      baseDomain: 'postimees.ee',
-      urlTemplate: 'https://postimees.ee/{id}',
+      baseDomain: "postimees.ee",
+      urlTemplate: "https://postimees.ee/{id}",
     };
   }
 
@@ -44,13 +53,13 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
       return null; // Main site (with or without www)
     }
     if (url.match(/^https?:\/\/rus\.postimees\.ee\//)) {
-      return 'rus';
+      return "rus";
     }
     if (url.match(/^https?:\/\/arvamus\.postimees\.ee\//)) {
-      return 'arvamus';
+      return "arvamus";
     }
     if (url.match(/^https?:\/\/majandus\.postimees\.ee\//)) {
-      return 'majandus';
+      return "majandus";
     }
     // If it's any other subdomain (kultuur, sport, etc.), return undefined
     return undefined;
@@ -63,19 +72,19 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
     $: CheerioAPI,
     url: string,
     articleId: number,
-    subMedia: PostimeesSubMedia
+    subMedia: PostimeesSubMedia,
   ): ArticleInsert | null {
     // Date time
-    const date_time = $('.article__publish-date').attr('content');
+    const date_time = $(".article__publish-date").attr("content");
     if (!date_time) {
       console.warn(`No date_time found for: ${url}`);
       return null;
     }
 
     // Title (try two selectors)
-    let title = trim($('.article__headline').text()) || null;
+    let title = trim($(".article__headline").text()) || null;
     if (!title) {
-      title = trim($('.article-superheader__headline').text()) || null;
+      title = trim($(".article-superheader__headline").text()) || null;
     }
     if (!title) {
       console.warn(`No title found for: ${url}`);
@@ -83,25 +92,32 @@ export class PostimeesBaseCrawler extends BaseCrawler<PostimeesSubMedia> {
     }
 
     // Authors - split on comma and trim each name
-    const authorsText = trim($('.author .author__name').text());
+    const authorsText = trim($(".author .author__name").text());
     let authors: string[] | null = null;
     if (authorsText) {
-      const authorsList = authorsText.split(',').map((name) => trim(name)).filter((name) => name.length > 0);
+      const authorsList = authorsText
+        .split(",")
+        .map((name) => trim(name))
+        .filter((name) => name.length > 0);
       authors = authorsList.length > 0 ? authorsList : null;
     }
 
     // Paywall (presence check - detects premium badge in breadcrumb)
-    const paywall = $('section.root.breadcrumb ul.breadcrumb__items .button-m--premium').length > 0;
+    const paywall =
+      $("section.root.breadcrumb ul.breadcrumb__items .button-m--premium")
+        .length > 0;
 
     // Category
-    const category = trim($('ul.breadcrumb__items li.breadcrumb-item:last-child a').text()) || null;
+    const category =
+      trim($("ul.breadcrumb__items li.breadcrumb-item:last-child a").text()) ||
+      null;
 
     // Preview image
-    const preview_url = $('.figure__image-wrapper img').attr('src') || null;
+    const preview_url = $(".figure__image-wrapper img").attr("src") || null;
 
     // Body text
     const bodyParts: string[] = [];
-    $('.article-body-content p').each((_: number, element: any) => {
+    $(".article-body-content p").each((_: number, element: any) => {
       const text = $(element).text();
       if (text) {
         bodyParts.push(text);

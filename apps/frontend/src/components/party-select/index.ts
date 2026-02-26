@@ -1,1 +1,1 @@
-export { default } from './party-select'; 
+export { default } from './party-select';

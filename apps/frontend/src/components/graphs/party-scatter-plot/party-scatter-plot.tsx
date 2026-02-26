@@ -65,40 +65,46 @@ const PartyScatterPlotGraph = ({ media_id, party }: PartyScatterPlotGraphProps) 
   }, [startDate, endDate, party]);
 
   // Memoize the filter function for domain range
-  const filterDataToDomainRange = useCallback((data: any[]) => {
-    const [domainStart, domainEnd] = formattedDomainDateRange;
-    const domainStartDate = dayjs(domainStart);
-    const domainEndDate = dayjs(domainEnd);
+  const filterDataToDomainRange = useCallback(
+    (data: any[]) => {
+      const [domainStart, domainEnd] = formattedDomainDateRange;
+      const domainStartDate = dayjs(domainStart);
+      const domainEndDate = dayjs(domainEnd);
 
-    return data.filter(entry => {
-      const entryDate = dayjs(entry.date);
-      return entryDate.isSameOrAfter(domainStartDate) && entryDate.isSameOrBefore(domainEndDate);
-    });
-  }, [formattedDomainDateRange]);
+      return data.filter(entry => {
+        const entryDate = dayjs(entry.date);
+        return entryDate.isSameOrAfter(domainStartDate) && entryDate.isSameOrBefore(domainEndDate);
+      });
+    },
+    [formattedDomainDateRange]
+  );
 
   // Memoize the format function for X-axis
-  const formatXAxis = useCallback((timestamp: number) => {
-    const date = dayjs(timestamp);
+  const formatXAxis = useCallback(
+    (timestamp: number) => {
+      const date = dayjs(timestamp);
 
-    // Calculate the total duration to determine the appropriate format
-    const [domainStart, domainEnd] = formattedDomainDateRange;
-    const startDate = dayjs(domainStart);
-    const endDate = dayjs(domainEnd);
-    const totalDuration = endDate.diff(startDate, 'day');
+      // Calculate the total duration to determine the appropriate format
+      const [domainStart, domainEnd] = formattedDomainDateRange;
+      const startDate = dayjs(domainStart);
+      const endDate = dayjs(domainEnd);
+      const totalDuration = endDate.diff(startDate, 'day');
 
-    // For ranges less than 1 year, show month and day
-    if (totalDuration < 365) {
-      return date.format('MMM D');
-    }
+      // For ranges less than 1 year, show month and day
+      if (totalDuration < 365) {
+        return date.format('MMM D');
+      }
 
-    // For ranges between 1-3 years, show month and year
-    if (totalDuration < 365 * 3) {
-      return date.format('MMM YYYY');
-    }
+      // For ranges between 1-3 years, show month and year
+      if (totalDuration < 365 * 3) {
+        return date.format('MMM YYYY');
+      }
 
-    // For ranges over 3 years, show just the year
-    return date.format('YYYY');
-  }, [formattedDomainDateRange]);
+      // For ranges over 3 years, show just the year
+      return date.format('YYYY');
+    },
+    [formattedDomainDateRange]
+  );
 
   // Memoize the ticks calculation
   const calculateTicks = useCallback((startTimestamp: number, endTimestamp: number) => {
@@ -120,7 +126,7 @@ const PartyScatterPlotGraph = ({ media_id, party }: PartyScatterPlotGraphProps) 
 
   return (
     <BaseGraph fetchUrl={fetchUrl} processData={processData}>
-      {(data) => {
+      {data => {
         // Filter data to domain range
         const filteredData = filterDataToDomainRange(data);
 
@@ -142,7 +148,7 @@ const PartyScatterPlotGraph = ({ media_id, party }: PartyScatterPlotGraphProps) 
               fontSize={10}
               tickSize={10}
               axisLine={false}
-              orientation='top'
+              orientation="top"
             />
 
             <YAxis
@@ -158,7 +164,7 @@ const PartyScatterPlotGraph = ({ media_id, party }: PartyScatterPlotGraphProps) 
             />
 
             <CartesianGrid strokeDasharray="3 3" />
-            
+
             <Scatter
               name={party}
               data={filteredData}
@@ -168,7 +174,6 @@ const PartyScatterPlotGraph = ({ media_id, party }: PartyScatterPlotGraphProps) 
             />
 
             <Tooltip content={<PartyScatterPlotTooltip />} />
-
           </ScatterChart>
         );
       }}

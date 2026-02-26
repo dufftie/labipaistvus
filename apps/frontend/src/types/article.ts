@@ -31,8 +31,8 @@ export interface SentimentData {
   analysed_at: string;
   sentiment: {
     article: {
-      id: number,
-      title_score: never,
+      id: number;
+      title_score: never;
       title_explanation: string;
       body_score: number;
       body_explanation: string;

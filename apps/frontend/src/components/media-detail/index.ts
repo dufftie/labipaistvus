@@ -1,1 +1,1 @@
-export { default } from './media-header'; 
+export { default } from './media-header';
