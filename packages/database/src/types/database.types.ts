@@ -34,6 +34,73 @@ export type Database = {
   };
   public: {
     Tables: {
+      article_embeddings: {
+        Row: {
+          created_at: string | null
+          embedding: string
+          embedding_type: string
+          id: number
+          model_name: string
+          ref_id: number
+          text_hash: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          embedding: string
+          embedding_type: string
+          id?: number
+          model_name: string
+          ref_id: number
+          text_hash?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          embedding?: string
+          embedding_type?: string
+          id?: number
+          model_name?: string
+          ref_id?: number
+          text_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_embeddings_ref_id_fkey"
+            columns: ["ref_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_relevancy: {
+        Row: {
+          created_at: string | null
+          id: number
+          ref_id: number
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          ref_id: number
+          status: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          ref_id?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_relevancy_ref_id_fkey"
+            columns: ["ref_id"]
+            isOneToOne: true
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       articles: {
         Row: {
           article_id: number;
