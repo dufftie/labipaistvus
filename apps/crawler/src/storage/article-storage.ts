@@ -1,12 +1,12 @@
-import { supabase, type Tables } from '@labipaistvus/database';
+import { type Database, supabase } from '@labipaistvus/database';
 
-type Article = Tables<'articles'>;
+type ArticleInsert = Database["public"]["Tables"]["articles"]["Insert"];
 
 export class ArticleStorage {
   /**
    * Insert or update article in a database using upsert
    */
-  async insertOrUpdateArticle(article: Article): Promise<Article> {
+  async insertOrUpdateArticle(article: ArticleInsert): Promise<ArticleInsert> {
     const {data, error} = await supabase
     .from('articles')
     .insert(article)
@@ -28,6 +28,7 @@ export class ArticleStorage {
     .select('article_id')
     .eq('media_id', mediaId)
     .order('article_id', {ascending: false})
+    .limit(1)
     .single();
 
     if (error) throw new Error(`Failed to get max article_id: ${ error.message }`);

@@ -8,3 +8,7 @@ export {
   type PostimeesSubMedia,
 } from "./postimees-base-crawler.js";
 export { ErrBaseCrawler, type ErrSubMedia } from "./err-base-crawler.js";
+export {
+  DelfiBaseCrawler,
+  type DelfiSubMedia,
+} from "./delfi-base-crawler.js";

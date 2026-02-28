@@ -1,9 +1,9 @@
 import { CheerioCrawler, type CheerioAPI } from "crawlee";
 import type { MediaConfig } from "../utils/config.js";
-import type { Tables } from "@labipaistvus/database";
+import type { Database } from "@labipaistvus/database";
 import { ArticleStorage } from "../storage/article-storage";
 
-type Article = Tables<'articles'>;
+type ArticleInsert = Database["public"]["Tables"]["articles"]["Insert"];
 
 /**
  * Configuration for media-specific parsing
@@ -71,7 +71,7 @@ export abstract class BaseCrawler<
     url: string,
     articleId: number,
     subMedia: TSubMedia,
-  ): Article | null;
+  ): ArticleInsert | null;
 
   /**
    * Check if URL is on the correct domain (after redirects)

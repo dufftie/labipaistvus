@@ -2,7 +2,7 @@ import "dotenv/config";
 import { supabase, type Tables } from "@labipaistvus/database";
 
 export type MediaConfig = Tables<"news_media">;
-export type MEDIA_SLUG = "postimees" | "err";
+export type MEDIA_SLUG = "postimees" | "err" | "delfi";
 
 /**
  * Load media configuration from the database by slug

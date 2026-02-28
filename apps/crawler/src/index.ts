@@ -4,7 +4,7 @@ import { Configuration } from "crawlee";
 import {
   PostimeesBaseCrawler,
   ErrBaseCrawler,
-  type BaseCrawler,
+  type BaseCrawler, DelfiBaseCrawler,
 } from "./crawlers";
 import { getMediaConfig, MEDIA_SLUG, MediaConfig } from "./utils/config.js";
 
@@ -21,6 +21,8 @@ function createCrawler(
   options?: any,
 ): BaseCrawler {
   switch (mediaSlug) {
+    case "delfi":
+      return new DelfiBaseCrawler(config, options);
     case "postimees":
       return new PostimeesBaseCrawler(config, options);
     case "err":
